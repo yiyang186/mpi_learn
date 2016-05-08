@@ -1,18 +1,21 @@
 #include "matrix.h"
 
 Matrix::Matrix() {
-    for(int i = 0; i < BLOCK_N; i++)
-        for(int j = 0; j < BLOCK_N; j++)
-            matrix[i][j] = new Block();
+    matrix = (double*)malloc(sizeof(double) * LEN2);
 }
 
 Matrix::~Matrix() {
-    for(int i = 0; i < BLOCK_N; i++)
-        for(int j = 0; j < BLOCK_N; j++)
-            delete matrix[i][j];
+    free(matrix);
 }
 
-int Matrix::load(char *file, int my_rank, MPI_Datatype* MPI_MATRIX) {
+int Matrix::load(char *file, 
+                 int my_rank, 
+                 int comm_sz;
+                 MPI_Datatype* blocktype
+                 MPI_Comm comm) {
+    int local_n = BLOCK_N2/comm_sz; 
+    Block local_block[local_n];
+
     if(my_rank == 1) {
         FILE* fp = fopen(file,"r");
         if(fp == NULL)
@@ -25,11 +28,15 @@ int Matrix::load(char *file, int my_rank, MPI_Datatype* MPI_MATRIX) {
             int j = n_j / BLOCK_LEN;
             int k = n_i % BLOCK_LEN;
             int l = n_j % BLOCK_LEN;
-            fscanf(fp, "%lf", &(matrix[i][j]->block[k * BLOCK_LEN + l]));
+            fscanf(fp, "%lf", &matrix[(i*BLOCK_N+j)*BLOCK_LEN2 + \
+                k*BLOCK_LEN+l]);
         }
         fclose(fp);
 
-        MPI_Scatter(&matrix[0][0]->block[0], 1, MPI_MATRIX, )
+        
+        MPI_Scatter(matrix, local_n, blocktype, \
+                   local_block.block, local_n, blocktype,\
+                   0, comm);
     } else {
 
     }

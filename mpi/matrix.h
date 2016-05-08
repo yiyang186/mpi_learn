@@ -6,12 +6,11 @@
 
 class Matrix
 {
-private:
-    Block *matrix[LEN][LEN];
 public:
+	double *matrix;
     Matrix();
     ~Matrix();
-    int load(char *file, );
+    int load(char *file, int my_rank, MPI_Datatype* MPI_MATRIX);
     int save(char *file);
     Matrix& operator=(const Matrix& m);
     Matrix operator+(const Matrix& m) const;

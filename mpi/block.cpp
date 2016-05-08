@@ -23,7 +23,7 @@ Block Block::operator+(const Block& b) const {
 }
 
 Block Block::operator*(const Block& b) const {
-    Block c;
+    Block c; 
     for (int i = 0; i < BLOCK_LEN; i++)
         for (int j = 0; j <BLOCK_LEN; j++) {
             double sum = 0;

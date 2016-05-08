@@ -5,10 +5,8 @@
 
 class Block
 {
-	friend class Matrix;
-private:
-    double* block;
 public:
+    double* block;
     Block();
     ~Block();
     Block& operator=(const Block& m);
