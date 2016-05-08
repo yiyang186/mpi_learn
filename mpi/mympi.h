@@ -6,6 +6,7 @@
 #include "matrix.h"
 
 void buildBlockMPIType(MPI_Datatype* mytype);
-void buildMatrixMPIType(MPI_Datatype* mytype);
+void matrixAdd(Block* local_block, Block* total_block, int* len,\
+	MPI_Datatype* mytype);
 
 #endif

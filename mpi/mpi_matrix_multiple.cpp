@@ -14,27 +14,25 @@ int main(void) {
     char fileB[] = "B.txt";
     char fileC[] = "C.txt";
 
-    MPI_Datatype MY_MPI_BLOCK;
-    buildBlockMPIType(MPI_Datatype* MY_MPI_BLOCK);
-
-    MPI_Datatype MY_MPI_MATRIX;
-    buildMatrixMPIType(MPI_Datatype* MY_MPI_MATRIX);
-
     Matrix A, B, C;
+    MPI_Datatype MY_MPI_BLOCK;
+    buildBlockMPIType(MY_MPI_BLOCK);
+
+    MPI_Datatype MPI_MATRIX_A, MPI_MATRIX_B, MPI_MATRIX_C;
+    buildMatrixMPIType(MPI_MATRIX_A, MY_MPI_BLOCK, A);
+    buildMatrixMPIType(MPI_MATRIX_B, MY_MPI_BLOCK, B);
+    buildMatrixMPIType(MPI_MATRIX_C, MY_MPI_BLOCK, C);
+
+    MPI_Op MY_MPI_BLOCK_SUM;  
+    MPI_Op_create((MPI_User_function*)matrixAdd, true, &MY_MPI_BLOCK_SUM);
+
     A.load(fileA);
     B.load(fileB);
 
     MPI_Scatter()
 
     C = A * B;
-    C.save(fileC);
-
-    MPI_Op MY_MPI_SUM;  
-
-  
-    MPI_Op_create((MPI_User_function*)myProd,1,&MY_MPI_SUM);  
-    buildBlockMPIType(&MY_MPI_BLOCK);  
-    MPI_Reduce(dist,result,20,MY_MPI_BLOCK,MY_MPI_SUM,MASTER,MPI_COMM_WORLD); 
+    C.save(fileC); 
 
     MPI_Finalize();
 

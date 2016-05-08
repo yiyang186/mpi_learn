@@ -12,21 +12,27 @@ Matrix::~Matrix() {
             delete matrix[i][j];
 }
 
-int Matrix::load(char *file) {
-    FILE* fp = fopen(file,"r");
-    if(fp == NULL)
-        return 1;
+int Matrix::load(char *file, int my_rank, MPI_Datatype* MPI_MATRIX) {
+    if(my_rank == 1) {
+        FILE* fp = fopen(file,"r");
+        if(fp == NULL)
+            return 1;
 
-    for(int n = 0; n < LEN2; n++) {
-        int n_i = n / LEN;
-        int n_j = n % LEN;
-        int i = n_i / BLOCK_LEN;
-        int j = n_j / BLOCK_LEN;
-        int k = n_i % BLOCK_LEN;
-        int l = n_j % BLOCK_LEN;
-        fscanf(fp, "%lf", &(matrix[i][j]->block[k * BLOCK_LEN + l]));
+        for(int n = 0; n < LEN2; n++) {
+            int n_i = n / LEN;
+            int n_j = n % LEN;
+            int i = n_i / BLOCK_LEN;
+            int j = n_j / BLOCK_LEN;
+            int k = n_i % BLOCK_LEN;
+            int l = n_j % BLOCK_LEN;
+            fscanf(fp, "%lf", &(matrix[i][j]->block[k * BLOCK_LEN + l]));
+        }
+        fclose(fp);
+
+        MPI_Scatter(&matrix[0][0]->block[0], 1, MPI_MATRIX, )
+    } else {
+
     }
-    fclose(fp);
     return 0;
 }
 
