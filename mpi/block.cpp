@@ -1,7 +1,13 @@
 #include "block.h"
 
 Block::Block() {
+    block = new double[BLOCK_LEN2_EX]();
+}
+
+Block::Block(double* b) {
     block = new double[BLOCK_LEN2]();
+    for(int i = 0; i < BLOCK_LEN2; i++)
+        block[i] = b[i];
 }
 
 Block::~Block() {
@@ -9,9 +15,10 @@ Block::~Block() {
 }
 
 Block& Block::operator=(const Block& b) {
-    if(this != &b) {}
-    for (int i = 0; i < BLOCK_LEN2; i++)
-        block[i] = b.block[i];
+    if(this != &b) {
+        for (int i = 0; i < BLOCK_LEN2; i++)
+            block[i] = b.block[i];
+    }
     return *this;
 }
 
